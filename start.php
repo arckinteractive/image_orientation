@@ -19,6 +19,21 @@ function init() {
 
 function fix_orientation($source, $name) {
 	
+	$allowed_extensions = array(
+		"gif",
+		"jpeg",
+		"jpg",
+		"png",
+		"wbmp",
+		"xbm"
+	);
+	
+	$pathinfo = pathinfo($name);
+	if (!in_array($pathinfo['extension'], $allowed_extensions)) {
+		// not in the capabilities of Imagine
+		return false;
+	}
+
 	$imginfo = getimagesize($source);
 	$requiredMemory1 = ceil($imginfo[0] * $imginfo[1] * 5.35);
 	$requiredMemory2 = ceil($imginfo[0] * $imginfo[1] * ($imginfo['bits'] / 8) * $imginfo['channels'] * 2.5);
