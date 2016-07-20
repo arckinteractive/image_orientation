@@ -57,7 +57,17 @@ function fix_orientation($source, $name) {
 	
 	//@note - need to copy to a tmp_location as
 	// imagine doesn't like images with no file extension
-	copy($source, $tmp_location);
+	//@note - need to copy to a tmp_location as
+	// imagine doesn't like images with no file extension
+	if (!copy($source, $tmp_location)) {
+		return false;
+	}
+	
+	if (!file_exists($tmp_location)) {
+		// the copy failed
+		// full disk or something?
+		return false;
+	}
 	
 	try {
 
