@@ -1,4 +1,6 @@
 {
+    "name": "arckinteractive/image_orientation",
+    "type": "elgg-plugin",
     "require": {
         "imagine/imagine": "~0.6.1"
     }
