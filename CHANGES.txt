@@ -1,6 +1,0 @@
-== Version History ==
-
-x.x
-
-1.0.1 (10/22/2015):
- - only attempt to correct known image types
