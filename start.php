@@ -9,16 +9,20 @@ require_once __DIR__ . '/lib/hooks.php';
 
 elgg_register_event_handler('init', 'system', __NAMESPACE__ . '\\init');
 
-function init() {
-	elgg_register_library('imagine', __DIR__ . '/vendor/autoload.php');
-	
+// newer elgg provides this by default
+// only include if we can't find it
+if (!class_exists('Imagine\\Gd\\Imagine') && file_exists(__DIR__ . '/vendor/autoload.php')) {
+	require_once __DIR__ . '/vendor/autoload.php';
+}
+
+function init() {	
 	elgg_extend_view('input/file', 'input/image_orientation');
 	elgg_register_plugin_hook_handler('action', 'all', __NAMESPACE__ . '\\actions_hook', 0);
 }
 
 
 function fix_orientation($source, $name) {
-	
+
 	$allowed_extensions = array(
 		"gif",
 		"jpeg",
@@ -51,7 +55,6 @@ function fix_orientation($source, $name) {
 		return false;
 	}
 
-	elgg_load_library('imagine');
 	$name = uniqid() . $name;
 	$tmp_location = elgg_get_config('dataroot') . 'image_orientation/' . $name;
 	
