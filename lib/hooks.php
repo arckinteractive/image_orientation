@@ -4,6 +4,9 @@ namespace image\orientation;
 
 function actions_hook($h, $t, $r, $p) {
 	$inputs = get_input('image_orientation_names', false);
+	
+	// add special case for dropzone uploads
+	$inputs = is_array($inputs) ? array_merge($inputs, ['dropzone']) : ['dropzone'];
 
 	if (!$inputs) {
 		return $r;
@@ -23,7 +26,7 @@ function actions_hook($h, $t, $r, $p) {
 						continue;
 					}
 					
-					fix_orientation($_FILES[$name]['tmp_name'][$key], $_FILES[$name]['name']);
+					fix_orientation($_FILES[$name]['tmp_name'][$key], $_FILES[$name]['name'][$key]);
 				}
 			}
 			else {
