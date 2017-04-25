@@ -33,7 +33,7 @@ function fix_orientation($source, $name) {
 	);
 	
 	$pathinfo = pathinfo($name);
-	if (!in_array($pathinfo['extension'], $allowed_extensions)) {
+	if (!in_array(strtolower($pathinfo['extension']), $allowed_extensions)) {
 		// not in the capabilities of Imagine
 		return false;
 	}
