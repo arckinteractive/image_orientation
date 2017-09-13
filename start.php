@@ -1,7 +1,9 @@
 <?php
 
 namespace image\orientation;
-use Imagine\Gd\Imagine;
+
+use Imagine\Gd\Imagine as ImagineGD;
+use Imagine\Imagick\Imagine as ImagineImagick;
 use Imagine\Image\Metadata\ExifMetadataReader;
 use Imagine\Filter\Basic\Autorotate;
 
@@ -15,7 +17,7 @@ if (!class_exists('Imagine\\Gd\\Imagine') && file_exists(__DIR__ . '/vendor/auto
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-function init() {	
+function init() {
 	elgg_extend_view('input/file', 'input/image_orientation');
 	elgg_register_plugin_hook_handler('action', 'all', __NAMESPACE__ . '\\actions_hook', 0);
 }
@@ -74,7 +76,11 @@ function fix_orientation($source, $name) {
 	
 	try {
 
-		$imagine = new Imagine();
+		if (extension_loaded('imagick')) {
+			$imagine = new ImagineImagick();
+		} else {
+			$imagine = new ImagineGD();
+		}
 		$imagine->setMetadataReader(new ExifMetadataReader());
 
 		$autorotate = new Autorotate();
@@ -86,6 +92,8 @@ function fix_orientation($source, $name) {
 		return true;
 	} catch (Imagine\Exception\Exception $exc) {
 		// fail silently, we don't need to rotate it bad enough to kill the script
+		
+		unlink($tmp_location);
 		return false;
-	}	
+	}
 }
