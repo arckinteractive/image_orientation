@@ -18,7 +18,12 @@ if (!class_exists('Imagine\\Gd\\Imagine') && file_exists(__DIR__ . '/vendor/auto
 }
 
 function init() {
+	elgg_register_action('image_orientation/avatar_rotate', __DIR__ . '/actions/avatar/rotate.php');
+
 	elgg_extend_view('input/file', 'input/image_orientation');
+
+	elgg_extend_view('input/form', 'image_orientation/avatar_rotate');
+
 	elgg_register_plugin_hook_handler('action', 'all', __NAMESPACE__ . '\\actions_hook', 0);
 }
 
