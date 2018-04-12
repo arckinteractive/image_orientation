@@ -1,10 +1,14 @@
 <?php
 
-if ($vars['action_name'] != 'avatar/upload') {
+$user = elgg_extract('entity', $vars, false);
+if (!$user instanceof \ElggEntity) {
     return;
 }
 
-$user = elgg_get_logged_in_user_entity();
+if (!$user->canEdit()) {
+    return;
+}
+
 if (method_exists($user, 'hasIcon')) {
     if (!$user->hasIcon('master')) {
         return;
@@ -20,7 +24,9 @@ if (elgg_get_plugin_setting('enable_avatar_rotate', 'image_orientation') !== 'ye
     return;
 }
 
-$rotate = elgg_view_form('image_orientation/avatar_rotate');
+$rotate = elgg_view_form('image_orientation/avatar_rotate', [], [
+    'entity' => $user
+]);
 
 echo '<div class="hidden">';
 echo elgg_view_module('aside', elgg_echo('image_orientation:rotate:label'), $rotate, array(

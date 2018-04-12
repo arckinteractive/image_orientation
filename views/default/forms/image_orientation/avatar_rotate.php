@@ -10,4 +10,6 @@ echo '<div>' . elgg_view('input/dropdown', [
     ]
 ]) . '</div>';
 
+echo elgg_view('input/hidden', ['name' => 'guid', 'value' => $vars['entity']->guid]);
+
 echo elgg_view('input/submit', ['value' => elgg_echo('image_orientation:rotate'), 'class' => 'mtm']);

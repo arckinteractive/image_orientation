@@ -11,7 +11,8 @@ $en = array(
 	'image_orientation:rotate:option:90' => "Right",
 	'image_orientation:rotate:option:270' => "Left",
 	'image_orientation:rotate:option:180' => "Rotate 180°",
-	'image_orientation:rotate:invalid:rotation' => "Invalid Rotation"
+	'image_orientation:rotate:invalid:rotation' => "Invalid Rotation",
+	'image_orientation:rotate:invalid:guid' => "Invalid User"
 );
 
 add_translation('en', $en);

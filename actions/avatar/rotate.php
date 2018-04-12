@@ -7,11 +7,21 @@ use Imagine\Imagick\Imagine as ImagineImagick;
 use Imagine\Image\Metadata\ExifMetadataReader;
 use Imagine\Filter\Basic\Autorotate;
 
-$user = elgg_get_logged_in_user_entity();
+$user = get_user(get_input('guid'));
+if (!$user instanceof \ElggUser) {
+    register_error(elgg_echo('image_orientation:rotate:invalid:guid'));
+    forward(REFERER);
+}
+
+if (!$user->canEdit()) {
+    register_error(elgg_echo('image_orientation:rotate:invalid:guid'));
+    forward(REFERER);
+}
+
 $degrees = (int) get_input('rotate', 0);
 
 if (!in_array($degrees, [90, 180, 270])) {
-    register_error(elgg_echo('arck_avatar:rotate:invalid:rotation'));
+    register_error(elgg_echo('image_orientation:rotate:invalid:rotation'));
     forward(REFERER);
 }
 
@@ -83,12 +93,14 @@ try {
         }
     
         $file = new \ElggFile();
-        $file->owner_guid = $owner->guid;
+        $file->owner_guid = $user->guid;
         $file->setFilename("profile/{$user->guid}{$name}.jpg");
         $file->open('write');
         $file->write($resized);
         $file->close();
     }
+
+    $user->icontime = time();
     
 } catch (Imagine\Exception\Exception $exc) {
     // fail silently, we don't need to rotate it bad enough to kill the script
