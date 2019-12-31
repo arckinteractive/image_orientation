@@ -20,6 +20,6 @@
     "require": {
         "php": ">=5.5",
         "composer/installers": "~1.0",
-        "imagine/imagine": "^0.6.3"
+        "imagine/imagine": "^0.7.1"
     }
 }
